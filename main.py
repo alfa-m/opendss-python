@@ -46,28 +46,18 @@ for harmonic in [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25]:
         nome_csv_corrente = "D:\\Polar Files\\Documents\\TCC\\Python\\opendss\\I_nodal_freq_" + str(harmonic) + ".csv"
         pd.DataFrame(dss.circuit.system_y).to_csv(nome_csv_corrente, sep=',')
 
+        """
+        matrizY = pd.DataFrame()
+        tamanhoY = len(nomesNos)
+        i = 1
+        for a in range(tamanhoY):
+                linhaY = pd.DataFrame()
+                for b in range(tamanhoY):
+                        linhaY[a][b] = matrizAdmitancia[i][0] + i * matrizAdmitancia[i + 1][0]
+                        i = i + 2
+                matrizY[a] = linhaY
+        """
+
 matrizAdmitancia.to_csv("D:\\Polar Files\\Documents\\TCC\\Python\\opendss\\Y_freq_total.csv", sep=',')
 tensaoNodal.to_csv("D:\\Polar Files\\Documents\\TCC\\Python\\opendss\\V_nodal_total.csv", sep=',')
 correnteNodal.to_csv("D:\\Polar Files\\Documents\\TCC\\Python\\opendss\\I_nodal_total.csv", sep=',')
-
-"""
-%     mySysY = DSSCircuit.SystemY;
-%     NomesNos = DSSCircuit.AllNodeNames;
-%     TamanhoY = size(NomesNos);
-% 
-%     myYMat = [];
-%     myIdx = 1;
-% 
-%     for a = 1:TamanhoY(1)
-%         myRow = [];
-%         for b = 1:TamanhoY(1)
-%             myRow = [myRow,(mySysY(myIdx) + i*mySysY(myIdx + 1))];
-%             myIdx = myIdx + 2;
-%         end;
-%         myYMat = [myYMat;myRow];
-%     end;
-%     
-%     Y = [Y; myYMat];
-%     V_nodais = [V_nodais; DSSCircuit.AllBusVmag];
-
-"""
