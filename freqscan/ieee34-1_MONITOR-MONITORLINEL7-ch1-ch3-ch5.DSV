@@ -1,0 +1,8 @@
+SetProp, 1E050,   -1E050, 1E050, -1E050, 16777215, 16777215, 0, 4
+Curve, 0, 0, 2, 0, 0, 1, " Harmonic"
+Curve, 0, 255, 2, 0, 0, 1, " VAngle1"
+Curve, 0, 16711680, 2, 0, 0, 1, " VAngle2"
+Xlabel, "Frequency, Hz"
+Ylabel, "Mag"
+ChartCaption, "monitorlinel7:  V1,  V2,  V3"
+PctRim, 2
