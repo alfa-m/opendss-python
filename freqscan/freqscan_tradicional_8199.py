@@ -31,7 +31,7 @@ harmonicos = np.arange(1,25.25,0.25).tolist()
 dss.text("New spectrum.espectroharmonico numharm={} csvfile=espectro_harmonico.csv".format(str(len(harmonicos))))
 
 #  Adiciona a fonte de corrente harmônica de sequência positiva
-barra = nomesBarras[16]
+barra = nomesBarras[37]
 dss.text("New Isource.scansource bus1={} amps=1 spectrum=espectroharmonico".format(barra))
 
 # Adiciona um monitor em cada linha
