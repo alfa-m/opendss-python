@@ -11,6 +11,7 @@ dss = py_dss_interface.DSS(r"C:\Program Files\OpenDSS")
 script_path = os.path.dirname(os.path.abspath(__file__))
 dss_file = pathlib.Path(script_path).joinpath("ieee34Mod1.dss")
 dss.text("Compile [{}]".format(dss_file))
+dss.dssinterface.allow_forms = 0
 
 # Adiciona dados de coordenadas das barras
 dss.text("Buscoords BusCoords.dat")
@@ -39,9 +40,10 @@ harmonicos = np.arange(1,25.25,0.25).tolist()
 dss.text("New spectrum.espectroharmonico numharm={} csvfile=espectro_harmonico.csv".format(str(len(harmonicos))))
 
 #  Adiciona a fonte de corrente harmônica de sequência positiva
-#barra = nomesBarras[3]
-barra = '814'
-dss.text("New Isource.scansource bus1={} amps=1 spectrum=espectroharmonico".format(barra))
+barra = nomesBarras[5]
+scansource = "Isource.scansource{}".format(barra)
+dss.text("New {} bus1={} amps=1 spectrum=espectroharmonico".format(scansource,barra))
+
 dss.solution.solve()
 
 # Seleciona o modo de solução harmonic
@@ -50,12 +52,25 @@ dss.text("Set mode=harmonic")
 matrixV = pd.DataFrame()
 matrixVpu = pd.DataFrame()
 
+print("Barra " + barra)
+# Realiza a solução harmônica iterada
 for h in range(len(harmonicos)):
     dss.text("Set harmonic={}".format(harmonicos[h]))
     dss.solution.solve()
-    matrixV[harmonicos[h]] = dss.circuit.buses_vmag
-    matrixVpu[harmonicos[h]] = dss.circuit.buses_vmag_pu
-    dss.monitors.save_all()
+    indice = "Barra " + str(barra) + " - harmonico " + str(harmonicos[h]*60)
+    matrixV[indice] = dss.circuit.buses_vmag
+    matrixVpu[indice] = dss.circuit.buses_vmag_pu
+    dss.monitors.reset_all()
+
+    print("Harmonico " + str(harmonicos[h]*60))
+
+matrixV.to_csv("Vmag - Barra {}.csv".format(barra))
+matrixVpu.to_csv("Vmagpu - Barra {}.csv".format(barra))
+
+# Desabilita a fonte de corrente atual
+fontesCorrente = dss.isources.names
+ultimaFonteCorrente = fontesCorrente[(len(fontesCorrente)-1)]
+dss.text("Disable Isource.{}".format(ultimaFonteCorrente))
 
 ## Exporta todos os valores dos monitores
 #dss.text("Export monitors all")
