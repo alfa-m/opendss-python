@@ -75,6 +75,11 @@ for j in range(1,len(nomesBarras)):
     ultimaFonteCorrente = fontesCorrente[(len(fontesCorrente)-1)]
     dss.text("Disable Isource.{}".format(ultimaFonteCorrente))
 
+nomesBarras_df = pd.DataFrame(nomesBarras)
+nomesNos_df = pd.DataFrame(nomesNos)
+nomesBarras_df.to_csv("lista_de_barras.csv")
+nomesNos_df.to_csv("lista_de_nos.csv")
+
 ## Exporta todos os valores dos monitores
 #dss.text("Export monitors all")
 
