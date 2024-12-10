@@ -41,11 +41,15 @@ harmonicos = np.arange(1,26,2).tolist()
 dss.text("New spectrum.espectroharmonico numharm={} csvfile=espectro_harmonico_reduzido.csv".format(str(len(harmonicos))))
 
 # Cria loop de fonte de corrente harmônica
-for j in range(1,len(nomesBarras)):
+#for j in range(1,len(nomesBarras)):
+for j in range(3,len(nomesNos)):
     #  Adiciona a fonte de corrente harmônica de sequência positiva
-    barra = nomesBarras[j]
-    scansource = "Isource.scansource{}".format(barra)
-    dss.text("New {} bus1={} amps=1 spectrum=espectroharmonico".format(scansource,barra))
+    #barra = nomesBarras[j]
+    no = nomesNos[j]
+    barra = no.split(".")
+    barra = barra[0]
+    scansource = "Isource.scansource{}".format(no)
+    dss.text("New {} bus1={} amps=1 spectrum=espectroharmonico".format(scansource,no))
 
     dss.solution.solve()
 
@@ -55,20 +59,24 @@ for j in range(1,len(nomesBarras)):
     matrixV = pd.DataFrame()
     matrixVpu = pd.DataFrame()
 
-    print("Barra " + barra)
+    #print("Barra " + barra)
+    print("Nó " + no)
     # Realiza a solução harmônica iterada
     for h in range(len(harmonicos)):
         dss.text("Set harmonic={}".format(harmonicos[h]))
         dss.solution.solve()
-        indice = "Barra " + str(barra) + " - harmonico " + str(harmonicos[h]*60)
+        #indice = "Barra " + str(barra) + " - harmonico " + str(harmonicos[h]*60)
+        indice = "No " + str(no) + " - harmonico " + str(harmonicos[h]*60)
         matrixV[indice] = dss.circuit.buses_vmag
         matrixVpu[indice] = dss.circuit.buses_vmag_pu
         dss.monitors.reset_all()
 
         print("Harmonico " + str(harmonicos[h]*60))
 
-    matrixV.to_csv("Vmag - Barra {}.csv".format(barra))
-    matrixVpu.to_csv("Vmagpu - Barra {}.csv".format(barra))
+    #matrixV.to_csv("Vmag - Barra {}.csv".format(barra))
+    #matrixVpu.to_csv("Vmagpu - Barra {}.csv".format(barra))
+    matrixV.to_csv("Vmag - Nó {}.csv".format(no))
+    matrixVpu.to_csv("Vmagpu - Nó {}.csv".format(no))
 
     # Desabilita a fonte de corrente atual
     fontesCorrente = dss.isources.names
