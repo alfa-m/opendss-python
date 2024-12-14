@@ -16,6 +16,7 @@
 - Arquivo ["freqscan_loop_iterado.py"](./freqscan/freqscan_loop_iterado.py): ARQUIVO CORRETO
 - Demais arquivos python: Incorretos ou variações do arquivo acima
 - Arquivos csv:
+  - "v_node_[nome do nó]": Arquivo com medições de V (parte real e imaginária) por nó no circuito. Existe um para cada nó. Arquivos sendo utilizados nas análises
   - "vmag_node_[nome do nó]": Arquivo com medições da magnitude de V por nó no circuito. Existe um para cada nó. Arquivos sendo utilizados nas análises
   - "vmagpu_node_[nome do nó]": Arquivo com medições da magnitude de V em pu por nó no circuito. Existe um para cada nó. Arquivos sendo utilizados nas análises
   - ["lista_de_barras"](./freqscan/lista_de_barras.csv): Arquivo contendo os nomes das barras
