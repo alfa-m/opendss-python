@@ -56,8 +56,9 @@ for j in range(3,len(nomesNos)):
     # Seleciona o modo de solução harmonic
     dss.text("Set mode=harmonic")
 
+    matrixVmag = pd.DataFrame()
+    matrixVmagpu = pd.DataFrame()
     matrixV = pd.DataFrame()
-    matrixVpu = pd.DataFrame()
 
     #print("Barra " + barra)
     print("Nó " + node)
@@ -67,16 +68,19 @@ for j in range(3,len(nomesNos)):
         dss.solution.solve()
         #indice = "Barra " + str(barra) + " - harmonico " + str(harmonicos[h]*60)
         indice = "node_" + str(node) + "_harmonico_" + str(harmonicos[h]*60)
-        matrixV[indice] = dss.circuit.buses_vmag
-        matrixVpu[indice] = dss.circuit.buses_vmag_pu
+        matrixVmag[indice] = dss.circuit.buses_vmag
+        matrixVmagpu[indice] = dss.circuit.buses_vmag_pu
+        matrixV[indice] = dss.circuit.buses_volts
         dss.monitors.reset_all()
 
         print("Harmonico " + str(harmonicos[h]*60))
 
-    #matrixV.to_csv("Vmag - Barra {}.csv".format(barra))
-    #matrixVpu.to_csv("Vmagpu - Barra {}.csv".format(barra))
-    matrixV.to_csv("vmag_node_{}.csv".format(node))
-    matrixVpu.to_csv("vmagpu_node_{}.csv".format(node))
+    #matrixVmag.to_csv("Vmag - Barra {}.csv".format(barra))
+    #matrixVmagpu.to_csv("Vmagpu - Barra {}.csv".format(barra))
+    #matrixV.to_csv("V - Barra {}.csv".format(barra))
+    matrixVmag.to_csv("vmag_node_{}.csv".format(node))
+    matrixVmagpu.to_csv("vmagpu_node_{}.csv".format(node))
+    matrixV.to_csv("v_node_{}.csv".format(node))
 
     # Desabilita a fonte de corrente atual
     fontesCorrente = dss.isources.names
