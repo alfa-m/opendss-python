@@ -20,7 +20,7 @@ dss.text("Buscoords BusCoords.dat")
 nomesLinhas = dss.lines.names
 nomesBarras = dss.circuit.buses_names
 nomesNos = dss.circuit.nodes_names
-
+s
 # Realiza a solução do fluxo de potência para obter os valores de magnitude e fase das tensões e correntes
 dss.solution.solve()
 
@@ -36,15 +36,12 @@ for i in range(len(nomesLinhas)):
 nomesMonitores = dss.monitors.names
 
 # Define o espectro de frequências a serem analisadas
-#harmonicos = np.arange(1,25.25,0.25).tolist()
 harmonicos = np.arange(1,26,2).tolist()
 dss.text("New spectrum.espectroharmonico numharm={} csvfile=espectro_harmonico_reduzido.csv".format(str(len(harmonicos))))
 
 # Cria loop de fonte de corrente harmônica
-#for j in range(1,len(nomesBarras)):
 for j in range(3,len(nomesNos)):
     #  Adiciona a fonte de corrente harmônica de sequência positiva
-    #barra = nomesBarras[j]
     node = nomesNos[j]
     barra = node.split(".")
     barra = barra[0]
@@ -56,30 +53,25 @@ for j in range(3,len(nomesNos)):
     # Seleciona o modo de solução harmonic
     dss.text("Set mode=harmonic")
 
-    matrixVmag = pd.DataFrame()
-    matrixVmagpu = pd.DataFrame()
+    #matrixVmag = pd.DataFrame()
+    #matrixVmagpu = pd.DataFrame()
     matrixV = pd.DataFrame()
 
-    #print("Barra " + barra)
     print("Nó " + node)
     # Realiza a solução harmônica iterada
     for h in range(len(harmonicos)):
         dss.text("Set harmonic={}".format(harmonicos[h]))
         dss.solution.solve()
-        #indice = "Barra " + str(barra) + " - harmonico " + str(harmonicos[h]*60)
         indice = "node_" + str(node) + "_harmonico_" + str(harmonicos[h]*60)
-        matrixVmag[indice] = dss.circuit.buses_vmag
-        matrixVmagpu[indice] = dss.circuit.buses_vmag_pu
+        #matrixVmag[indice] = dss.circuit.buses_vmag
+        #matrixVmagpu[indice] = dss.circuit.buses_vmag_pu
         matrixV[indice] = dss.circuit.buses_volts
         dss.monitors.reset_all()
 
         print("Harmonico " + str(harmonicos[h]*60))
 
-    #matrixVmag.to_csv("Vmag - Barra {}.csv".format(barra))
-    #matrixVmagpu.to_csv("Vmagpu - Barra {}.csv".format(barra))
-    #matrixV.to_csv("V - Barra {}.csv".format(barra))
-    matrixVmag.to_csv("vmag_node_{}.csv".format(node))
-    matrixVmagpu.to_csv("vmagpu_node_{}.csv".format(node))
+    #matrixVmag.to_csv("vmag_node_{}.csv".format(node))
+    #matrixVmagpu.to_csv("vmagpu_node_{}.csv".format(node))
     matrixV.to_csv("v_node_{}.csv".format(node))
 
     # Desabilita a fonte de corrente atual
