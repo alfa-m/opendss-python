@@ -20,7 +20,7 @@ dss.text("Buscoords BusCoords.dat")
 nomesLinhas = dss.lines.names
 nomesBarras = dss.circuit.buses_names
 nomesNos = dss.circuit.nodes_names
-s
+
 # Realiza a solução do fluxo de potência para obter os valores de magnitude e fase das tensões e correntes
 dss.solution.solve()
 
