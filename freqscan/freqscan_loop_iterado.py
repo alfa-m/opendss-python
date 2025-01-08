@@ -36,11 +36,11 @@ for i in range(len(nomesLinhas)):
 nomesMonitores = dss.monitors.names
 
 # Define o espectro de frequências a serem analisadas
-harmonicos = np.arange(1,26,2).tolist()
+harmonicos = np.arange(1,50,2).tolist()
 dss.text("New spectrum.espectroharmonico numharm={} csvfile=espectro_harmonico_reduzido.csv".format(str(len(harmonicos))))
 
 # Cria loop de fonte de corrente harmônica
-for j in range(3,len(nomesNos)):
+for j in range(len(nomesNos)):
     #  Adiciona a fonte de corrente harmônica de sequência positiva
     node = nomesNos[j]
     barra = node.split(".")
